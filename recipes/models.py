@@ -1,10 +1,12 @@
-from ast import mod
-from distutils.command.upload import upload
-from statistics import mode
-from turtle import update
+from django.contrib.auth.models import User
 from django.db import models
 
-# Create your models here.
+
+class Category(models.Model):
+    name = models.CharField(max_length=70)
+
+    def __str__(self):
+        return self.name
 
 
 class Recipe(models.Model):
@@ -20,6 +22,10 @@ class Recipe(models.Model):
     created_at = models.DateField(auto_now_add=True)
     update_at = models.DateField(auto_now=True)
     is_published = models.BooleanField(default=False)
-    cover = models.ImageField(uploada_to='recipes/cover/%Y/%m/%d/')
-
-
+    cover = models.ImageField(upload_to='recipes/covers/%Y/%m/%d/')
+    category = models.ForeignKey(
+        Category, on_delete=models.SET_NULL, null=True
+        )
+    author = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True
+        )
